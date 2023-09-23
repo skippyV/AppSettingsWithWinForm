@@ -49,4 +49,9 @@ I also wanteded to see how I can change the location directory of both config fi
   going to worry about configuration paths for this project.
       https://stackoverflow.com/questions/2518772/how-to-change-net-user-settings-location
  
+Wanted a default value for List<string> to be populated with but could not figure out how to
+do that with DefaultSettingValueAttribute. So used the designer to see how what options it 
+allows and the closest thing to a List allowed was the System.Collections.Specialized.StringCollection.
+And the default value is set with an XML blob. Not as pretty as I'd hoped but works.
+
 Note - this project uses Serilog for a couple logging statements.

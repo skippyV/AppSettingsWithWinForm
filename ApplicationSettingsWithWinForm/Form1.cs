@@ -135,7 +135,7 @@ namespace ApplicationSettingsWithWinForm
             //MyCustomSettings.Reset();
             if (UserScopedSettings.DogNames == null)
             {
-                UserScopedSettings.DogNames = new List<string>();
+                UserScopedSettings.DogNames = new System.Collections.Specialized.StringCollection();  //new List<string>();
             }
 
             //MyCustomSettings.AddDogName("shaggy");
