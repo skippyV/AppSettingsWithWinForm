@@ -133,10 +133,6 @@ namespace ApplicationSettingsWithWinForm
             UserScopedSettings = new MyUserScopeAppSettings();
 
             //MyCustomSettings.Reset();
-            if (UserScopedSettings.DogNames == null)
-            {
-                UserScopedSettings.DogNames = new System.Collections.Specialized.StringCollection();  //new List<string>();
-            }
 
             //MyCustomSettings.AddDogName("shaggy");
             if (!CheckIfUserConfigFileExists())
