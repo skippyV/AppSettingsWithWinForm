@@ -3,6 +3,7 @@ using Serilog;
 using System.Collections;
 using System.Configuration;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ApplicationSettingsWithWinForm
 {
@@ -79,7 +80,10 @@ namespace ApplicationSettingsWithWinForm
         // because I didn't use the designer
         private void Form1_Load(object? sender, EventArgs e)
         {
-            // CreateApplicationScopedCustomConfigSection();
+            if (!CheckIfUserConfigFileExists())
+            {
+                UserScopedSettings?.Save();
+            }
         }
 
         private void Form1_UnLoad(object? sender, EventArgs e)
@@ -137,7 +141,7 @@ namespace ApplicationSettingsWithWinForm
             //MyCustomSettings.AddDogName("shaggy");
             if (!CheckIfUserConfigFileExists())
             {
-                UserScopedSettings.Save();
+                //UserScopedSettings.Save();  // doesn't seem to work here anyways...
             }
         }
 
@@ -249,6 +253,7 @@ namespace ApplicationSettingsWithWinForm
             if (listBox != null)
             {
                 RefreshListControlDataSource(listBox);
+                ResizeListBox(listBox);
             }
         }
 
@@ -307,15 +312,45 @@ namespace ApplicationSettingsWithWinForm
             Controls.Add(comboBox);
         }
 
+        private Size listBoxPreferredSize = new Size();
+        private Size listBoxMaxSize = new Size();
+
+        private void ResizeListBox(ListBox listBox)
+        {
+           // listBox.Height = listBoxPreferredSize.Height; // doesn't work
+            //listBox.Size = new(listBox.Width, listBoxPreferredSize.Height *2); // doesn't work either//
+            listBox.ResumeLayout(false);
+            if(listBox.Size.Height < listBox.PreferredHeight && listBox.PreferredHeight < listBoxMaxSize.Height)
+            {
+                listBox.Size = new(listBox.Width, listBox.PreferredHeight);
+            }
+           
+            listBox.PerformLayout();
+
+            // these next two statements did not affect the gui layout. Would say that they are for content only but had
+            // to jump through other hoops to get the content to refresh from changes in the datasource.
+            //listBox.Refresh(); listBox.Update();
+            //listBox.Parent.Refresh(); listBox.Parent.Update();
+            
+        }
+
         private void CreateListBox()
         {
+            
             ListBox listBox = new()
             {
                 Name = ListBoxName,
                 Location = ListBoxLocation,
-                Size = new(150, 150),
+               // Size = new(150, 150),
                 SelectionMode = SelectionMode.MultiExtended
             };
+
+            Size defaultSize = listBox.Size;
+            listBoxMaxSize = new Size(defaultSize.Width, defaultSize.Height * 2);
+
+            Size preferredSize = listBox.PreferredSize;
+            listBoxPreferredSize = new(preferredSize.Width, preferredSize.Height / 4);
+            listBox.Size = listBoxPreferredSize;
 
             SetListControlDataSource(listBox);
 

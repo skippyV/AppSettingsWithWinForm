@@ -54,4 +54,14 @@ do that with DefaultSettingValueAttribute. So used the designer to see how what 
 allows and the closest thing to a List allowed was the System.Collections.Specialized.StringCollection.
 And the default value is set with an XML blob. Not as pretty as I'd hoped but works.
 
+UPDATE - I'd thought I had the right incantations to always get the ApplicationSettingsBase.Save() method
+to save to file, when I called Save(). But then as I slowly incorporated it into my NumberBoard winform 
+project, it was not saving! Even though I used the Form.Load event handler for both projects, to do a 
+save. However, I had not yet done any bindings in the NumberBoard project. Just instantiated the Settings
+class and expected to see the defaults (or something) written to file. However, when I did an assignment 
+to one of the Properties in the Settings class, the file was generated with that property's value.
+So, there must be some lazy loading going on here where if the properties are not used in a binding or set
+with a value, within code, then the Save method will not do anything. This had me scratching my head for 
+quite a while. So now I just need to put in my bindings and then a file should be generated.
+
 Note - this project uses Serilog for a couple logging statements.
